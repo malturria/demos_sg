@@ -1,0 +1,105 @@
+  $scope.sinchk = false;
+        $scope.letiqueta = "Filtro: Sin Notificar";
+
+        $scope.sinchk2 = false;
+        $scope.letiqueta2 = "Filtro: Sin Respuesta";
+
+
+mandamail
+
+fpnn
+
+
+
+
+
+2022-05-12 11:09:17 
+
+select turnos.codmed, turnos.diasem, turnos.fechatur, turnos.hhmmTur, turnos.horatur, turnos.tipoturno, turnos.usuario, 
+turnos.fechagenera, turnos.usuariogenera, turnos.codesp, turnos.codprest, turnos.codreserva, turnos.fechatomado, turnos.solicigia, 
+turnos.tomado, PRESTADORES.nombre, turnos.tipotomado, turnos.codent, turnos.usuariosector, turnos.afiliado
+from turnos 
+INNER JOIN PRESTADORES ON PRESTADORES.ID = TURNOS.CODMED
+where turnos.id = 20011945
+and turnos.ID not in (select idturnos from turnoscancel where fechatur >= CURRENT_DATE)
+
+2022-05-12 11:09:17
+
+insert into turnoscancel(afiliado, codcancela, codent, codesp, codmed, codmedsoli, codprest, codreserva, diasem, feccancela, fechatomado, 
+                        fechatur, hhmmTur, horatur, solicigia, tipotomado, tipoturno, usuario, usucancela, observa, UsuarioSector, idturnos, tipotomado) 
+                        values (1316583.00, 2, 948, 'MFAM', 6348, 0, 42030805, '0011945-3', 4, '2022-05-12 11:09:17', '2022-05-10 11:09:12', '2022-06-01', 1140, '2022-06-01 11:40:00', 
+                        1, 0, 0, 'TURNOSWEB', 'WHATSAPPBOT', 'PACIENTE CANCELA TURNO - WHATSAPP SRV -', 36, 20011945, 4)
+
+2022-05-12 11:09:17
+
+insert into turnos(afiliado, codesp, codmed, codprest, codserv, codent, confirmado, codreserva, diasem, fechatur, hhmmTur, horatur, nrovale, 
+                                                    tipotomado, tipoturno, solicigia, usuario, observa, fechagenera, usuariogenera, UsuarioSector)  
+                                                    values (0, '', 6348, 0, 0, 0, 0, ' ', 4, '2022-06-01', 1140, '2022-06-01 11:40:00', 0, 0, 0, 0, 'TURNOSWEB', ' ', '2022-04-18 09:50:45', 'VGIARROCCO', 0)
+2022-05-12 11:09:17
+
+update turnos set afiliado=2, usuario='', codprest=0, codmedsoli=0, solicigia=0, codreserva='', tipotomado=0, 
+codent=0, codserv=0, codesp=' ', UsuarioSector=0, tipoturno=9 where turnos.id=20011945
+
+
+
+
+
+https://servicios.sg.com.ar/api/appointments?
+
+healthInsurance=149&place=1&specialty=LABO&patient=
+healthInsurance=149&place=1&specialty=LABO&patient=29319246
+
+&professional=4368&patient=3162514
+
+&beginDate=2022-03-20
+
+&quantity=1000
+
+
+
+-----------
+
+
+
+Silvia Susana Dobry te ha mencionado en una incidencia
+Gestión General de Proyectos	  /  	
+GGP-1522
+Ajuste criterio determinación estado link de pago - Desarrollo
+	Silvia Susana Dobry 1:56 p. m. ART
+@malturria 
+
+
+SELECT t.ID,ID_Servicio, FechaCreaCobro, FechaVenceCobro, /FechaCreaBP,/
+case when CreadoBP=0 then 'LinkBP_pendiente' when CreadoBP=1 then 'LinkBP_generado' when @suma > 0 then 'Cobrado'
+when CreadoBP=3 then 'Vencido' when CreadoBP=4 then 'Monto$0' when CreadoBP=5 then 'TurnoSInDatos' ELSE 'Vencido' END AS EstadoPago,
+( SELECT @suma:=sum(dd.amount) FROM ChronosPay_Pagos_Detalle dd WHERE dd.ID_TRX=t.ID and dd.status = 'approved' ) AS MontoCobrado,
+case when @suma > 0 then 'Cobrado' ELSE 'NO Cobrado' END AS EstadoPagoCorregido,
+/FechaEnvio, IDEnvioOSANA, ClaveUnica1,/
+PacienteNombre, PacienteDocNum, FechaTurno, HoraTurno, /TipoTurno,/ MontoACobrar+MontoACobrar2 as Monto, payments_amount as Monto_Recibe_SG, d.status,
+/TipoConsulta, MontoACobrar, MontoACobrar2, MedicoNombre,/ MedicoApellido, MedicoEspecialidad, /Ambito,/
+DATE_FORMAT( d.datetime, '%Y-%m-%d %h:%i') AS fechahora_del_pagoUTC, DATE_FORMAT( CONVERT_TZ(d.datetime,'+00:00','-03:00') , '%Y-%m-%d %h:%i') AS fecha_del_pago
+FROM TRX t
+left JOIN ChronosPay_Pagos_Cabecera c ON c.ID_TRX=t.ID
+left JOIN ChronosPay_Pagos_Detalle d ON d.ID_TRX=t.ID
+WHERE TIPOTURNO = 'VIRTUAL' AND FechaCreaCobro > '2022-04-27 00:00:00'
+AND PacienteDocNum = 28899124
+ORDER BY PacienteNombre,t.ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
